@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace UnityConvar
 {
-    public class Class1
+    public class ConsoleVariableManager
     {
+        
     }
 }
