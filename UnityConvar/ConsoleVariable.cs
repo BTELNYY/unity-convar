@@ -9,7 +9,9 @@ namespace UnityConvar
 {
     public class ConsoleVariable<T> : GenericConsoleVariable
     {
-        public sealed override Type ValueType => typeof(T);
+        public override Type ValueType => typeof(T);
+
+        public virtual T DefaultValue { get; } = default(T);
 
         T _value;
 
@@ -25,56 +27,30 @@ namespace UnityConvar
             }
         }
 
-        public override object GetValueGeneric()
+        public sealed override object GetValueGeneric()
         {
             return Value;
         }
 
-        public override void SetValueGeneric(object value)
+        public sealed override void SetValueGeneric(string value)
         {
             T parsedValue = Parse(value);
             Value = parsedValue;
         }
 
-        public T Parse(object value)
+        public virtual T Parse(string value)
         {
-            if (!IsValid(value))
-            {
-                return default(T);
-            }
-            if(value is T parsed)
-            {
-                return parsed;
-            }
-            if (value.GetType().IsAssignableFrom(typeof(T)))
-            {
-                return (T)value;
-            }
-            object result = Convert.ChangeType(value, typeof(T));
-            if(result != null)
-            {
-                return (T)result;
-            }
-            T convertCustom = ConvertCustom(value);
-            if(convertCustom != null)
-            {
-                return convertCustom;
-            }
-            throw new InvalidCastException("The specified value type for the convar is not correct.");
+            throw new NotImplementedException();
         }
 
-        public virtual bool IsValid(object value)
+        public override string ToString()
         {
-            if(value == null)
-            {
-                return false;
-            }
-            return true;
+            return Value.ToString();
         }
 
-        protected virtual T ConvertCustom(object value)
+        protected void HandleParseError(string value)
         {
-            return default;
+            throw new ParseException(ValueType, value);
         }
     }
 }

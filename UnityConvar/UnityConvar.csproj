@@ -44,16 +44,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\ConsoleVariableAttribute.cs" />
+    <Compile Include="BuiltIn\BoolConsoleVariable.cs" />
+    <Compile Include="BuiltIn\ByteConsoleVariable.cs" />
+    <Compile Include="BuiltIn\FloatConsoleVariable.cs" />
+    <Compile Include="BuiltIn\IntConsoleVariable.cs" />
+    <Compile Include="BuiltIn\LongConsoleVariable.cs" />
+    <Compile Include="BuiltIn\StringConsoleVariable.cs" />
+    <Compile Include="BuiltIn\UintConsoleVariable.cs" />
+    <Compile Include="BuiltIn\UlongConsoleVariable.cs" />
     <Compile Include="ConsoleVariable.cs" />
     <Compile Include="ConsoleVariableManager.cs" />
+    <Compile Include="Attributes\ConsoleVariableTypeAttribute.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GenericConsoleVariable.cs" />
+    <Compile Include="ParseException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeConverters\TypeConverter.cs" />
-    <Compile Include="TypeConverters\TypeConverterGeneric.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TypeConverters\BuiltIn\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

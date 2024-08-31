@@ -26,7 +26,7 @@ namespace UnityConvar
 
         public virtual ConvarFlags Flags { get; set; } = ConvarFlags.None;
 
-        public virtual void SetValueGeneric(object value)
+        public virtual void SetValueGeneric(string value)
         {
             throw new NotImplementedException();
         }
