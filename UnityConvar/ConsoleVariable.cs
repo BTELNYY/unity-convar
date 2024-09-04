@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UnityConvar
 {
-    public class ConsoleVariable<T> : GenericConsoleVariable
+    public class ConsoleVariable<T> : GenericConsoleVariable, IEquatable<T>
     {
         public override Type ValueType => typeof(T);
 
@@ -51,6 +51,11 @@ namespace UnityConvar
         protected void HandleParseError(string value)
         {
             throw new ParseException(ValueType, value);
+        }
+
+        public bool Equals(T other)
+        {
+            return Value.Equals(other);
         }
     }
 }
