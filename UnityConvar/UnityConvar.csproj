@@ -47,6 +47,8 @@
     <Compile Include="Attributes\ConsoleVariableAttribute.cs" />
     <Compile Include="BuiltIn\BoolConsoleVariable.cs" />
     <Compile Include="BuiltIn\ByteConsoleVariable.cs" />
+    <Compile Include="BuiltIn\ConsoleVariableArray.cs" />
+    <Compile Include="BuiltIn\DoubleConsoleVariable.cs" />
     <Compile Include="BuiltIn\FloatConsoleVariable.cs" />
     <Compile Include="BuiltIn\IntConsoleVariable.cs" />
     <Compile Include="BuiltIn\LongConsoleVariable.cs" />
