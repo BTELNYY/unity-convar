@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,13 @@ namespace UnityConvar.BuiltIn
             Value = values;
         }
 
-        public virtual string Delimeter { get; } = "|";
+
+
+        public virtual char Delimeter { get; } = ',';
+
+        public virtual char BeginningSymbol { get; } = '[';
+
+        public virtual char EndingSymbol { get; } = ']';
 
         public override string ToString()
         {
@@ -36,6 +43,43 @@ namespace UnityConvar.BuiltIn
 
         public override IEnumerable<T> Parse(string value)
         {
+            List<string> result = new List<string>();
+            StringBuilder currentItem = new StringBuilder();
+            int depth = 0;
+            foreach (char c in value)
+            {
+                if (c == BeginningSymbol)
+                {
+                    if (depth > 0)
+                    {
+                        currentItem.Append(c);
+                    }
+                    depth++;
+                }
+                else if (c == EndingSymbol)
+                {
+                    depth--;
+                    if (depth > 0)
+                    {
+                        currentItem.Append(c);
+                    }
+                    else if (depth == 0)
+                    {
+                        result.Add(currentItem.ToString());
+                        currentItem.Clear();
+                    }
+                }
+                else if (c == Delimeter && depth == 0)
+                {
+                    result.Add(currentItem.ToString());
+                    currentItem.Clear();
+                }
+                else
+                {
+                    currentItem.Append(c);
+                }
+            }
+
             return base.Parse(value);
         }
 

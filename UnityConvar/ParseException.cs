@@ -11,8 +11,10 @@ namespace UnityConvar
         public Type ExpectedType { get; set; }
 
         public string StringRecieved { get; set; }
+        
+        public string CustomMessage { get; set; }
 
-        public ParseException(Type expectedType, string stringRecieved) : base($"Can't parse {stringRecieved} to {expectedType.FullName}!")
+        public ParseException(Type expectedType, string stringRecieved) : base($"Can't parse {stringRecieved} to {expectedType.FullName}! Custom Message:")
         {
             ExpectedType = expectedType;
             StringRecieved = stringRecieved;
@@ -24,5 +26,12 @@ namespace UnityConvar
         }
 
         public ParseException(string message) : base(message) { }
+
+        public ParseException(Type expectedType, string stringRecieved, string customMessage) : base($"Can't parse {stringRecieved} to {expectedType.FullName}! Custom Message: {customMessage}")
+        { 
+            ExpectedType = expectedType;
+            StringRecieved = stringRecieved;
+            CustomMessage = customMessage;
+        }
     }
 }

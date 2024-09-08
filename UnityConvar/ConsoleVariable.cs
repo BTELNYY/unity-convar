@@ -48,9 +48,9 @@ namespace UnityConvar
             return Value.ToString();
         }
 
-        protected void HandleParseError(string value)
+        protected void HandleParseError(string value, string message = "No Custom Message")
         {
-            throw new ParseException(ValueType, value);
+            throw new ParseException(ValueType, value, message);
         }
 
         public bool Equals(T other)
