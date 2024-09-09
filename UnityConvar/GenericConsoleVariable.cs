@@ -14,6 +14,10 @@ namespace UnityConvar
             {
                 throw new NotImplementedException();
             }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public virtual Type ValueType
@@ -26,7 +30,7 @@ namespace UnityConvar
 
         public virtual ConvarFlags Flags { get; set; } = ConvarFlags.None;
 
-        public virtual void SetValueGeneric(string value)
+        public virtual void SetValueGeneric(string value, bool forceUpdateOnManager = true)
         {
             throw new NotImplementedException();
         }

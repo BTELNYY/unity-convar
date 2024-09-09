@@ -12,12 +12,25 @@ namespace UnityConvar.BuiltIn
     [ConsoleVariableType]
     public class ConsoleVariableArray<T> : ConsoleVariable<IEnumerable<T>>, IEnumerable<T> where T : GenericConsoleVariable
     {
+        public ConsoleVariableArray()
+        {
+            ValidateType();
+        }
+
         public ConsoleVariableArray(IEnumerable<T> values)
         {
+            ValidateType();
             Value = values;
         }
 
-
+        protected virtual void ValidateType()
+        {
+            Type type = typeof(T);
+            if (!ConsoleVariableManager.HasConVarClass(type))
+            {
+                throw new InvalidOperationException($"Type {type.Name} does not have a valid registered convar class.");
+            }
+        }
 
         public virtual char Delimeter { get; } = ',';
 
@@ -43,7 +56,7 @@ namespace UnityConvar.BuiltIn
 
         public override IEnumerable<T> Parse(string value)
         {
-            List<string> result = new List<string>();
+            List<string> results = new List<string>();
             StringBuilder currentItem = new StringBuilder();
             int depth = 0;
             foreach (char c in value)
@@ -65,13 +78,13 @@ namespace UnityConvar.BuiltIn
                     }
                     else if (depth == 0)
                     {
-                        result.Add(currentItem.ToString());
+                        results.Add(currentItem.ToString());
                         currentItem.Clear();
                     }
                 }
                 else if (c == Delimeter && depth == 0)
                 {
-                    result.Add(currentItem.ToString());
+                    results.Add(currentItem.ToString());
                     currentItem.Clear();
                 }
                 else
@@ -79,7 +92,10 @@ namespace UnityConvar.BuiltIn
                     currentItem.Append(c);
                 }
             }
-
+            foreach(string result in results)
+            {
+                
+            }
             return base.Parse(value);
         }
 

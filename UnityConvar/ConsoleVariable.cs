@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Text;
@@ -9,6 +10,39 @@ namespace UnityConvar
 {
     public class ConsoleVariable<T> : GenericConsoleVariable, IEquatable<T>
     {
+        private string _name;
+
+        public override string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (_nameLocked)
+                {
+                    return;
+                }
+                _name = value;
+            }
+        }
+
+        private bool _nameLocked = false;
+
+        public bool NameLocked
+        {
+            get
+            {
+                return _nameLocked;
+            }
+        }
+
+        public void LockName()
+        {
+            _nameLocked = true;
+        }
+
         public override Type ValueType => typeof(T);
 
         public virtual T DefaultValue { get; } = default(T);
@@ -23,7 +57,13 @@ namespace UnityConvar
             }
             set
             {
+                if (Flags.HasFlag(ConvarFlags.ReadOnly))
+                {
+                    return;
+                }
                 _value = value;
+                int index = ConsoleVariableManager.GetVariableIndex(Name);
+                ConsoleVariableManager.SetVariable(index, this);
             }
         }
 
@@ -32,10 +72,19 @@ namespace UnityConvar
             return Value;
         }
 
-        public sealed override void SetValueGeneric(string value)
+        public sealed override void SetValueGeneric(string value, bool forceUpdateOnManager = true)
         {
+            if (Flags.HasFlag(ConvarFlags.ReadOnly))
+            {
+                return;
+            }
             T parsedValue = Parse(value);
             Value = parsedValue;
+            if (forceUpdateOnManager)
+            {
+                int index = ConsoleVariableManager.GetVariableIndex(Name);
+                ConsoleVariableManager.SetVariable(index, this);
+            }
         }
 
         public virtual T Parse(string value)
